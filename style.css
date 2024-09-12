@@ -34,8 +34,8 @@ body {
 
 .filter-button {
     background-color: transparent; /* Fundo transparente */
-    color: #de4622; /* Cor do texto */
-    border: 1px solid #de4622; /* Borda de 5px com a cor #de4622 */
+    color: #de4622; 
+    border: 1px solid #de4622; 
     padding: 8px 16px;
     border-radius: 20px;
     cursor: pointer;
@@ -44,14 +44,14 @@ body {
 }
 
 .filter-button:hover {
-    background-color: #de4622; /* Fundo muda na interação */
+    background-color: #de4622; 
     color: white; /* Cor do texto quando hover */
     transform: scale(1.05);
 }
 
 .filter-button.active {
     background-color: #de4622;
-    color: white; /* Cor do texto para o botão ativo */
+    color: white; /* Cor do texto pro botão ativo */
 }
 
 /* Galeria de cards */
@@ -98,7 +98,7 @@ body {
     background-color: transparent; /* Fundo transparente */
     color: #de4622; /* Cor do texto */
     padding: 10px 20px;
-    border: 1px solid #de4622; /* Borda de 5px com a cor #de4622 */
+    border: 1px solid #de4622; 
     border-radius: 20px;
     font-size: 14px;
     cursor: pointer;
