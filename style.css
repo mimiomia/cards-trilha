@@ -1,0 +1,128 @@
+/* Fonte Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: transparent; 
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Container principal */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px;
+    background-color: transparent; 
+}
+
+/* Filtros dos cards */
+.filter-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    background-color: transparent;
+    padding: 10px 20px;
+    border-radius: 10px;
+    top: 0;
+}
+
+.filter-button {
+    background-color: transparent; /* Fundo transparente */
+    color: #de4622; /* Cor do texto */
+    border: 1px solid #de4622; /* Borda de 5px com a cor #de4622 */
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease, color 0.3s ease;
+    font-weight: bold; /* Texto em negrito */
+}
+
+.filter-button:hover {
+    background-color: #de4622; /* Fundo muda na interação */
+    color: white; /* Cor do texto quando hover */
+    transform: scale(1.05);
+}
+
+.filter-button.active {
+    background-color: #de4622;
+    color: white; /* Cor do texto para o botão ativo */
+}
+
+/* Galeria de cards */
+.card {
+    background-color: transparent; /* Fundo do card transparente */
+    border: 1px solid #de4622;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 225px;
+    height: auto;
+}
+
+.card:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    transform: translateY(-5px);
+}
+
+.card-icon i {
+    font-size: 36px;
+    color: #ff5429;
+    margin-bottom: 10px;
+}
+
+.card h2 {
+    font-size: 19px;
+    color: #d03b00;
+    margin-bottom: 10px;
+}
+
+.card p {
+    font-size: 14px;
+    color: #d03b00;
+    margin-bottom: 20px;
+    flex-grow: 1;
+}
+
+/* Botões de mais info */
+.more-info {
+    background-color: transparent; /* Fundo transparente */
+    color: #de4622; /* Cor do texto */
+    padding: 10px 20px;
+    border: 1px solid #de4622; /* Borda de 5px com a cor #de4622 */
+    border-radius: 20px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease, color 0.3s ease;
+    align-self: center;
+    margin-top: auto;
+    font-weight: bold; /* Texto em negrito */
+}
+
+.more-info:hover {
+    background-color: #de4622; /* Fundo muda na interação */
+    color: white; /* Cor do texto quando hover */
+    transform: scale(1.05);
+}
+
+/* Responsividade */
+@media (max-width: 1024px) {
+    .card-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .card-grid {
+        grid-template-columns: 1fr;
+    }
+}
