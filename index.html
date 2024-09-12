@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Widget Reestruturado</title>
+    <!-- Fonte Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Estilo -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Fonte Poppins */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: transparent; 
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Wrapper para o conteúdo fixo e a área de rolagem */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 1200px;
+            flex-grow: 1;
+        }
+
+        /* Filtros dos cards (fixo no topo, mas não sobrepõe os cards) */
+        .filter-container {
+            display: flex;
+            gap: 10px;
+            padding: 10px 20px;
+            background-color: rgba(255, 255, 255, 0.05); /* Fundo semi-transparente */
+            border-radius: 10px;
+            width: 100%;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Adiciona uma sombra */
+            justify-content: center; /* Centraliza os botões */
+            position: sticky; /* Agora o filtro está "preso" no topo ao rolar */
+            top: 0;
+            z-index: 999; /* Garante que o filtro fique acima dos cards */
+        }
+
+        .filter-button {
+            background-color: transparent;
+            color: #de4622;
+            border: 1px solid #de4622;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease, color 0.3s ease;
+            font-weight: bold;
+        }
+
+        .filter-button:hover {
+            background-color: #de4622;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .filter-button.active {
+            background-color: #de4622;
+            color: white;
+        }
+
+        /* Container dos cards (área de rolagem separada) */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            width: 100%;
+            background-color: transparent;
+            padding: 20px;
+        }
+
+        .card {
+            background-color: transparent;
+            border: 1px solid #de4622;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 225px;
+            height: auto;
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .card-icon i {
+            font-size: 36px;
+            color: #ff5429;
+            margin-bottom: 10px;
+        }
+
+        .card h2 {
+            font-size: 19px;
+            color: #d03b00;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            font-size: 14px;
+            color: #d03b00;
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+
+        /* Botões de mais info */
+        .more-info {
+            background-color: transparent;
+            color: #de4622;
+            padding: 10px 20px;
+            border: 1px solid #de4622;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease, color 0.3s ease;
+            align-self: center;
+            margin-top: auto;
+            font-weight: bold;
+        }
+
+        .more-info:hover {
+            background-color: #de4622;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        /* Responsividade */
+        @media (max-width: 1024px) {
+            .card-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-content">
+        <!-- Filtros dos cards -->
+        <div class="filter-container">
+            <button onclick="filterCards('all')" class="filter-button active">Todos</button>
+            <button onclick="filterCards('Primeiros passos')" class="filter-button">Primeiros passos</button>
+            <button onclick="filterCards('Funcionalidades')" class="filter-button">Funcionalidades</button>
+            <button onclick="filterCards('Serviços')" class="filter-button">Serviços</button>
+        </div>
+
+        <!-- Galeria de Cards -->
+        <div class="card-grid" id="card-grid">
+            <!-- Cards Primeiros passos -->
+            <div class="card" data-category="Primeiros passos">
+                <div class="card-icon">
+                    <i class="fa-solid fa-download" aria-hidden="true"></i>
+                </div>
+                <h2>Instalando o gestor Multipedidos</h2>
+                <p>Requisitos mínimos do sistema, link e tutorial para instalação.</p>
+                <a href="https://ajuda-multipedidos.super.site/estrutura/primeiros-passos/instalando-o-gestor-multipedidos">
+                    <button class="more-info">Ver mais</button>
+                </a>
+            </div>
+
+            <div class="card" data-category="Primeiros passos">
+                <div class="card-icon">
+                    <i class="fa-solid fa-right-to-bracket" aria-hidden="true"></i>
+                </div>
+                <h2>Acessando o sistema Multipedidos</h2>
+                <p>Realizando o primeiro login e recuperação de dados de acesso.</p>
+                <a href="https://ajuda-multipedidos.super.site/estrutura/primeiros-passos/acessando-o-sistema-da-multipedidos">
+                    <button class="more-info">Ver mais</button>
+                </a>
+            </div>
+
+            <div class="card" data-category="Primeiros passos">
+                <div class="card-icon">
+                    <i class="fa-solid fa-gear" aria-hidden="true"></i>
+                </div>
+                <h2>Configurações básicas</h2>
+                <p>Configurações gerais do estabelecimento e horários de funcionamento.</p>
+                <a href="https://ajuda-multipedidos.super.site/estrutura/primeiros-passos/configuraes-bsicas">
+                    <button class="more-info">Ver mais</button>
+                </a>
+            </div>
+
+            <!-- Cards Funcionalidades -->
+            <div class="card" data-category="Funcionalidades">
+                <div class="card-icon">
+                    <i class="fa-solid fa-utensils" aria-hidden="true"></i>
+                </div>
+                <h2>Cardápio digital</h2>
+                <p>Realizando um pedido, acessando o cardápio digital e configurações do link de pedidos.</p>
+                <a href="https://ajuda-multipedidos.super.site/estrutura/funcionalidades/cardpio-digital">
+                    <button class="more-info">Ver mais</button>
+                </a>
+            </div>
+
+            <div class="card" data-category="Funcionalidades">
+                <div class="card-icon">
+                    <i class="fa-solid fa-receipt" aria-hidden="true"></i>
+                </div>
+                <h2>Gestor de pedidos</h2>
+                <p>Recebendo, modificando e alterando status de um pedido.</p>
+                <a href="https://ajuda-multipedidos.super.site/estrutura/funcionalidades/gestor-de-pedidos">
+                    <button class="more-info">Ver mais</button>
+                </a>
+            </div>
+
+            <div class="card" data-category="Funcionalidades">
+                <div class="card-icon">
+                    <i class="fa-solid fa-cash-register" aria-hidden="true"></i>
+                </div>
+                <h2>Frente de caixa (PDV)</h2>
+                <p>Abrindo o caixa, lançando e fechando pedidos, acessando o relatório do caixa.</p>
+                <a href="https://ajuda-multipedidos.super.site/estrutura/funcionalidades/frente-de-caixa-pdv">
+                    <button class="more-info">Ver mais</button>
+                </a>
+            </div>
+
+            <div class="card" data-category="Funcionalidades">
+                <div class="card-icon">
+                    <i class="fa-solid fa-pizza-slice" aria-hidden="true"></i>
+                </div>
+                <h2>Cardápio de pizza</h2>
+                <p>Gerenciamento de pizzas, combos, sabores, bordas e adicionais.</p>
+                <a href="https://ajuda-multipedidos.super.site/estrutura/funcionalidades/cardpio-de-pizza">
+                    <button class="more-info">Ver mais</button>
+                </a>
+            </div>
+
+            <div class="card" data-category="Funcionalidades">
+                <div class="card-icon">
+                    <i class="fa-solid fa-pen-to-square" aria-hidden="true"></i>
+                </div>
+                <h2>Editor de produtos</h2>
+                <p>Editando produtos, gerenciamento de itens e valores.</p>
+                <a href="https://ajuda-multipedidos.super.site/estrutura/funcionalidades/editor-de-produtos">
+                    <button class="more-info">Ver mais</button>
+                </a>
+            </div>
+
+            <div class="card" data-category="Funcionalidades">
+                <div class="card-icon">
+                    <i class="fa-solid fa-bell-concierge" aria-hidden="true"></i>
+                </div>
+                <h2>Cardápio de mesa e comandas</h2>
+                <p>Ativando preços para mesa, app do garçom, taxa de serviço.</p>
+                <a href="https://ajuda-multipedidos.super.site/estrutura/funcionalidades/cardpio-de-mesa-e-comandas">
+                    <button class="more-info">Ver mais</button>
+                </a>
+            </div>
+
+            <div class="card" data-category="Funcionalidades">
+                <div class="card-icon">
+                    <i class="fa-solid fa-robot" aria-hidden="true"></i>
+                </div>
+                <h2>Wabot</h2>
+                <p>Iniciando o Wabot, personalização de mensagens e coleta de feedback.</p>
+                <a href="https://ajuda-multipedidos.super.site/estrutura/funcionalidades/wabot">
+                    <button class="more-info">Ver mais</button>
+                </a>
+            </div>
+
+            <div class="card" data-category="Funcionalidades">
+                <div class="card-icon">
+                    <i class="fa-solid fa-motorcycle" aria-hidden="true"></i>
+                </div>
+                <h2>MPboy</h2>
+                <p>Gestão de motoboys, criando rota de entrega, integração com Wabot.</p>
+                <a href="https://ajuda-multipedidos.super.site/estrutura/funcionalidades/mpboy">
+                    <button class="more-info">Ver mais</button>
+                </a>
+            </div>
+
+            <div class="card" data-category="Funcionalidades">
+                <div class="card-icon">
+                    <i class="fa-solid fa-file-invoice-dollar" aria-hidden="true"></i>
+                </div>
+                <h2>Módulo fiscal</h2>
+                <p>Emitindo notas fiscais, enviando XMLs, configurações de NCMs.</p>
+                <a href="https://ajuda-multipedidos.super.site/estrutura/funcionalidades/mdulo-fiscal">
+                    <button class="more-info">Ver mais</button>
+                </a>
+            </div>
+
+            <div class="card" data-category="Funcionalidades">
+                <div class="card-icon">
+                    <i class="fa-solid fa-box" aria-hidden="true"></i>
+                </div>
+                <h2>Controle de estoque</h2>
+                <p>Configuração do estoque e gerenciamento de inventário.</p>
+                <a href="https://ajuda-multipedidos.super.site/estrutura/funcionalidades/controle-de-estoque">
+                    <button class="more-info">Ver mais</button>
+                </a>
+            </div>
+
+            <div class="card" data-category="Funcionalidades">
+                <div class="card-icon">
+                    <i class="fa-solid fa-sitemap" aria-hidden="true"></i>
+                </div>
+                <h2>Integrações</h2>
+                <p>Integração com iFood, TOTVS, TEF, PDV e Saipos.</p>
+                <a href="https://ajuda-multipedidos.super.site/estrutura/funcionalidades/integraes">
+                    <button class="more-info">Ver mais</button>
+                </a>
+            </div>
+
+            <div class="card" data-category="Funcionalidades">
+                <div class="card-icon">
+                    <i class="fa-solid fa-print" aria-hidden="true"></i>
+                </div>
+                <h2>Impressão de pedidos</h2>
+                <p>Configuração de impressoras, impressão automática e impressão de canhotos.</p>
+                <a href="https://ajuda-multipedidos.super.site/estrutura/funcionalidades/impresso-de-pedidos">
+                    <button class="more-info">Ver mais</button>
+                </a>
+            </div>
+
+            <div class="card" data-category="Funcionalidades">
+                <div class="card-icon">
+                    <i class="fa-solid fa-map-location-dot" aria-hidden="true"></i>
+                </div>
+                <h2>Área de entrega e motoboys</h2>
+                <p>Taxas de entrega, gerenciamento de motoboys e repasse do motoboy.</p>
+                <a href="https://ajuda-multipedidos.super.site/estrutura/funcionalidades/rea-de-entrega-e-motoboys">
+                    <button class="more-info">Ver mais</button>
+                </a>
+            </div>
+
+            <div class="card" data-category="Funcionalidades">
+                <div class="card-icon">
+                    <i class="fa-solid fa-wallet" aria-hidden="true"></i>
+                </div>
+                <h2>Formas de pagamento</h2>
+                <p>Configuração de PicPay, Mercado Pago, pagamento via Pix e cartões aceitos.</p>
+                <a href="https://ajuda-multipedidos.super.site/estrutura/funcionalidades/formas-de-pagamento">
+                    <button class="more-info">Ver mais</button>
+                </a>
+            </div>
+
+            <div class="card" data-category="Funcionalidades">
+                <div class="card-icon">
+                    <i class="fa-solid fa-calendar-check" aria-hidden="true"></i>
+                </div>
+                <h2>Agendamento</h2>
+                <p>Ativando agendamento de pedidos e definindo intervalos de horário.</p>
+                <a href="https://ajuda-multipedidos.super.site/estrutura/funcionalidades/agendamento">
+                    <button class="more-info">Ver mais</button>
+                </a>
+            </div>
+
+            <div class="card" data-category="Funcionalidades">
+                <div class="card-icon">
+                    <i class="fa-solid fa-chart-line" aria-hidden="true"></i>
+                </div>
+                <h2>Relatórios e desempenho</h2>
+                <p>Relatórios de vendas, clientes, caixa e avaliações.</p>
+                <a href="https://ajuda-multipedidos.super.site/estrutura/funcionalidades/relatrios-e-desempenho">
+                    <button class="more-info">Ver mais</button>
+                </a>
+            </div>
+
+            <div class="card" data-category="Funcionalidades">
+                <div class="card-icon">
+                    <i class="fa-solid fa-thumbs-up" aria-hidden="true"></i>
+                </div>
+                <h2>Avaliações</h2>
+                <p>Habilitando avaliações, definindo critérios de avaliação e envio de formulários.</p>
+                <a href="https://ajuda-multipedidos.super.site/estrutura/funcionalidades/avaliaes">
+                    <button class="more-info">Ver mais</button>
+                </a>
+            </div>
+
+            <div class="card" data-category="Funcionalidades">
+                <div class="card-icon">
+                    <i class="fa-solid fa-bullhorn" aria-hidden="true"></i>
+                </div>
+                <h2>Marketing</h2>
+                <p>Notificações Push, QR Code do cardápio, integração com redes sociais.</p>
+                <a href="https://ajuda-multipedidos.super.site/estrutura/funcionalidades/marketing">
+                    <button class="more-info">Ver mais</button>
+                </a>
+            </div>
+
+            <div class="card" data-category="Funcionalidades">
+                <div class="card-icon">
+                    <i class="fa-solid fa-ticket" aria-hidden="true"></i>
+                </div>
+                <h2>Cupons de desconto</h2>
+                <p>Criando, habilitando e excluindo cupons de desconto.</p>
+                <a href="https://ajuda-multipedidos.super.site/estrutura/funcionalidades/cupons-de-desconto">
+                    <button class="more-info">Ver mais</button>
+                </a>
+            </div>
+
+            <div class="card" data-category="Funcionalidades">
+                <div class="card-icon">
+                    <i class="fa-solid fa-trophy" aria-hidden="true"></i>
+                </div>
+                <h2>Fidelidade</h2>
+                <p>Configurando o programa de fidelidade e realizando sorteios.</p>
+                <a href="https://ajuda-multipedidos.super.site/estrutura/funcionalidades/fidelidade">
+                    <button class="more-info">Ver mais</button>
+                </a>
+            </div>
+
+            <!-- Cards Serviços -->
+            <div class="card" data-category="Serviços">
+                <div class="card-icon">
+                    <i class="fa-solid fa-chalkboard-user" aria-hidden="true"></i>
+                </div>
+                <h2>Treinamentos</h2>
+                <p>Treinamento iniciante, treinamento profissional, treinamento Wabot, treinamento de Marketing e plantão tira-dúvidas.</p>
+                <a href="https://ajuda-multipedidos.super.site/estrutura/servios/treinamentos">
+                    <button class="more-info">Ver mais</button>
+                </a>
+            </div>
+
+            <div class="card" data-category="Serviços">
+                <div class="card-icon">
+                    <i class="fa-solid fa-user-tie" aria-hidden="true"></i>
+                </div>
+                <h2>Gerente de contas</h2>
+                <p>Suporte personalizado dedicado, jornada de acompanhamento.</p>
+                <a href="https://ajuda-multipedidos.super.site/estrutura/servios/gerente-de-contas">
+                    <button class="more-info">Ver mais</button>
+                </a>
+            </div>
+
+            <div class="card" data-category="Serviços">
+                <div class="card-icon">
+                    <i class="fa-solid fa-user-shield" aria-hidden="true"></i>
+                </div>
+                <h2>Embaixador</h2>
+                <p>Programa de embaixadores, recompensas e benefícios.</p>
+                <a href="https://ajuda-multipedidos.super.site/estrutura/servios/embaixador">
+                    <button class="more-info">Ver mais</button>
+                </a>
+            </div>
+
+            <div class="card" data-category="Serviços">
+                <div class="card-icon">
+                    <i class="fa-solid fa-square-rss" aria-hidden="true"></i>
+                </div>
+                <h2>Blog</h2>
+                <p>Artigos sobre gestão, tutoriais e dicas.</p>
+                <a href="https://ajuda-multipedidos.super.site/estrutura/servios/blog">
+                    <button class="more-info">Ver mais</button>
+                </a>
+            </div>
+
+            <div class="card" data-category="Serviços">
+                <div class="card-icon">
+                    <i class="fa-solid fa-book-open" aria-hidden="true"></i>
+                </div>
+                <h2>Ebooks e materiais</h2>
+                <p>Materiais disponibilizados sobre gestão e estratégias de marketing.</p>
+                <a href="#">
+                    <button class="more-info">Ver mais</button>
+                </a>
+            </div>
+
+            <div class="card" data-category="Serviços">
+                <div class="card-icon">
+                    <i class="fa-solid fa-headset" aria-hidden="true"></i>
+                </div>
+                <h2>Suporte</h2>
+                <p>"Como abrir um chamado?" Nossos canais de contato.</p>
+                <a href="https://ajuda-multipedidos.super.site/estrutura/servios/suporte">
+                    <button class="more-info">Ver mais</button>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
